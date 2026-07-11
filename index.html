@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Portal de Cálculo Integral | Facultad de Ingeniería Industrial</title>
+  <!-- Fuentes: Space Grotesk para elegancia moderna, Fira Code para matemáticas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      /* Paleta base: verde y azul vibrante */
+      background: #021f1a;
+      background-image: 
+        radial-gradient(ellipse at 20% 25%, rgba(0, 180, 150, 0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(20, 120, 210, 0.3) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 40%, rgba(0, 200, 180, 0.2) 0%, transparent 50%);
+      color: #e0f0ec;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      transition: background 0.5s ease, color 0.5s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Modo oscuro verde/azul profundo (alternativo) */
+    body.dark-industrial {
+      background: #041210;
+      background-image: 
+        radial-gradient(ellipse at 18% 28%, rgba(0, 100, 80, 0.45) 0%, transparent 58%),
+        radial-gradient(ellipse at 82% 68%, rgba(10, 60, 130, 0.4) 0%, transparent 58%),
+        radial-gradient(ellipse at 45% 50%, rgba(0, 130, 110, 0.3) 0%, transparent 55%);
+      color: #c8ddd6;
+    }
+
+    /* Partículas animadas de fondo */
+    .particle-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+      background-image: radial-gradient(2px 2px at 25% 35%, rgba(100,255,210,0.9), transparent),
+                        radial-gradient(2px 2px at 75% 65%, rgba(80,180,255,0.9), transparent),
+                        radial-gradient(1px 1px at 55% 45%, rgba(0,230,180,0.8), transparent);
+      background-size: 220px 220px, 260px 260px, 190px 190px;
+      animation: particleFloat 28s infinite alternate ease-in-out;
+    }
+    @keyframes particleFloat {
+      0% { transform: translate(0,0); }
+      100% { transform: translate(-25px, 18px); }
+    }
+
+    .main-wrapper {
+      max-width: 1350px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      background: rgba(5, 40, 35, 0.55);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: 4rem;
+      padding: 2.8rem 3rem;
+      box-shadow: 0 35px 70px -20px rgba(0, 20, 15, 0.85), inset 0 0 0 1px rgba(0, 255, 200, 0.2);
+      border: 1px solid rgba(0, 210, 180, 0.25);
+      transition: all 0.5s ease;
+    }
+    body.dark-industrial .main-wrapper {
+      background: rgba(4, 25, 22, 0.65);
+      box-shadow: 0 35px 70px -20px rgba(0, 10, 8, 0.9), inset 0 0 0 1px rgba(0, 150, 120, 0.3);
+      border-color: rgba(0, 160, 130, 0.35);
+    }
+
+    /* Header con logo de facultad */
+    .premium-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.8rem;
+      margin-bottom: 2.8rem;
+      background: linear-gradient(135deg, rgba(0, 70, 60, 0.55) 0%, rgba(10, 90, 120, 0.6) 100%);
+      border-radius: 3rem;
+      padding: 1.8rem 2.8rem;
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(0, 230, 200, 0.4);
+      box-shadow: 0 20px 35px rgba(0, 30, 25, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+    .premium-header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 70%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,180,0.25) 0%, transparent 70%);
+      transform: rotate(15deg);
+    }
+    body.dark-industrial .premium-header {
+      background: linear-gradient(135deg, rgba(0, 50, 45, 0.7) 0%, rgba(5, 60, 90, 0.75) 100%);
+      border-color: rgba(0, 180, 140, 0.5);
+      box-shadow: 0 20px 35px rgba(0, 15, 10, 0.8);
+    }
+
+    .faculty-logo {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: rgba(0,0,0,0.3);
+      padding: 0.7rem 1.8rem;
+      border-radius: 3rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,255,180,0.3);
+    }
+    .faculty-logo img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(0,255,200,0.7));
+    }
+    .faculty-logo span {
+      font-weight: 600;
+      color: #b5ffe0;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .logo-area h1 {
+      font-weight: 700;
+      font-size: 2.7rem;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #8fffd8, #6bc8ff, #a0f0d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 10px rgba(0,200,150,0.6));
+    }
+
+    .creator-tag {
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      padding: 0.9rem 2.2rem;
+      border-radius: 4rem;
+      font-weight: 600;
+      color: #b5ffe0;
+      border: 1px solid rgba(0, 255, 180, 0.6);
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    body.dark-industrial .creator-tag {
+      background: rgba(0, 20, 15, 0.7);
+      color: #9ee6d0;
+      border-color: #0b9060;
+    }
+    .theme-switch {
+      background: rgba(0, 180, 140, 0.35);
+      border: none;
+      border-radius: 2.5rem;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: white;
+      transition: 0.3s;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    body.dark-industrial .theme-switch {
+      background: rgba(0, 100, 80, 0.6);
+    }
+
+    /* Navegación */
+    .nav-glass {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.8rem;
+      background: rgba(0, 45, 40, 0.5);
+      backdrop-filter: blur(18px);
+      padding: 0.8rem 2rem;
+      border-radius: 4rem;
+      justify-content: center;
+      border: 1px solid rgba(0, 230, 200, 0.35);
+      box-shadow: 0 10px 25px rgba(0, 30, 25, 0.6);
+    }
+    body.dark-industrial .nav-glass {
+      background: rgba(0, 30, 25, 0.65);
+      border-color: rgba(0, 160, 130, 0.45);
+    }
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: #b0ecd6;
+      font-weight: 600;
+      padding: 0.9rem 1.8rem;
+      border-radius: 3rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .nav-item:hover {
+      background: rgba(0, 200, 160, 0.35);
+      color: white;
+      transform: translateY(-2px);
+    }
+    .nav-item.active {
+      background: linear-gradient(135deg, #0b7a5e, #0f5f8a);
+      color: white;
+      box-shadow: 0 10px 22px rgba(0, 160, 130, 0.7);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Contenido */
+    .section-content {
+      display: none;
+      animation: contentReveal 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+    }
+    .section-content.visible {
+      display: block;
+    }
+    @keyframes contentReveal {
+      0% { opacity: 0; transform: translateY(25px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .hero-message {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: #c0f0e0;
+    }
+    .card-mosaic {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .knowledge-card {
+      background: rgba(0, 55, 45, 0.5);
+      backdrop-filter: blur(20px);
+      border-radius: 2.5rem;
+      padding: 2rem 1.8rem;
+      border: 1px solid rgba(0, 230, 190, 0.3);
+      box-shadow: 0 20px 35px rgba(0, 20, 15, 0.6);
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    body.dark-industrial .knowledge-card {
+      background: rgba(0, 35, 30, 0.6);
+      border-color: rgba(0, 170, 135, 0.4);
+    }
+    .knowledge-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 30px 45px rgba(0, 180, 140, 0.5);
+      border-color: rgba(0, 255, 200, 0.7);
+    }
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .knowledge-card h3 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin-bottom: 0.9rem;
+      color: #c0ffe8;
+    }
+    .knowledge-card p {
+      color: #b0d4c8;
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+      flex: 1;
+    }
+    .video-frame {
+      border-radius: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: #02110e;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+    }
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #8fc0b5;
+      border-top: 1px solid rgba(0, 230, 190, 0.2);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    body.dark-industrial footer {
+      color: #6da090;
+    }
+
+    @media (max-width: 700px) {
+      .main-wrapper {
+        padding: 2rem 1.5rem;
+      }
+      .premium-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particle-bg"></div>
+  <div class="main-wrapper">
+    <!-- Header con logo de la Facultad de Ingeniería Industrial -->
+    <header class="premium-header">
+      <div class="faculty-logo">
+        <!-- Logo representativo de Ingeniería Industrial (ícono moderno) -->
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none'%3E%3Ccircle cx='50' cy='50' r='45' stroke='%2300ffb3' stroke-width='6'/%3E%3Cpath d='M30 55 L50 20 L70 55 M40 45 L50 35 L60 45' stroke='%2300e6b8' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='65' r='8' fill='%2300ffaa'/%3E%3C/svg%3E" alt="Logo Ingeniería Industrial">
+        <span>Facultad de Ingeniería Industrial</span>
+      </div>
+      <div class="logo-area">
+        <h1>✨ Portal de Cálculo Integral</h1>
+        <p style="color:#a0e8d0; margin-top:0.3rem;">Excelencia académica en ingeniería</p>
+      </div>
+      <div class="creator-tag">
+        <span>🌟 Genesis Pinto</span>
+        <button id="themeToggle" class="theme-switch">🌿 Verde/Azul</button>
+      </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="nav-glass">
+      <button class="nav-item active" data-target="inicio">🏠 Inicio</button>
+      <button class="nav-item" data-target="parcial1">📘 1º Parcial</button>
+      <button class="nav-item" data-target="parcial2">📙 2º Parcial</button>
+    </nav>
+
+    <!-- Sección Inicio -->
+    <div id="inicio" class="section-content visible">
+      <div class="hero-message">
+        <h2 style="font-size:2.2rem; margin-bottom:0.5rem;">Domina el cálculo integral</h2>
+        <p>Desde el área bajo la curva hasta aplicaciones industriales. Diseñado por Genesis Pinto.</p>
+      </div>
+      <div class="card-mosaic">
+        <div class="knowledge-card"><span class="card-icon">📐</span><h3>Integrales</h3><p>Concepto fundamental del área acumulada y antiderivadas.</p></div>
+        <div class="knowledge-card"><span class="card-icon">⚡</span><h3>Sustitución</h3><p>Cambio de variable para simplificar funciones complejas.</p></div>
+      </div>
+    </div>
+
+    <!-- 1º Parcial -->
+    <div id="parcial1" class="section-content">
+      <h2 style="font-size:2rem; margin-bottom:1.8rem;">📘 1º Parcial: Técnicas de Integración</h2>
+      <div class="card-mosaic">
+        <div class="knowledge-card">
+          <span class="card-icon">📈</span><h3>Integrales Inmediatas</h3>
+          <p>Área bajo la curva y reglas básicas. ∫xⁿ dx = xⁿ⁺¹/(n+1) + C.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/AO8Xj1R2Mh0" title="Integrales inmediatas" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">🔄</span><h3>Cambio de Variables</h3>
+          <p>Método de sustitución u = g(x). Deshace la regla de la cadena.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/s1L4KkG5E8M" title="Cambio de variable" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">🧩</span><h3>Por Partes</h3>
+          <p>∫u dv = uv - ∫v du. Estrategia ALPES/ILATE.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/9jGsTJ2KXsQ" title="Integración por partes" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">📐</span><h3>Trigonométricas</h3>
+          <p>Potencias de seno, coseno, secante e identidades.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/5KQxQJhX1kA" title="Integrales trigonométricas" allowfullscreen></iframe></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2º Parcial -->
+    <div id="parcial2" class="section-content">
+      <h2 style="font-size:2rem; margin-bottom:1.8rem;">📙 2º Parcial: Aplicaciones Avanzadas</h2>
+      <div class="card-mosaic">
+        <div class="knowledge-card">
+          <span class="card-icon">🧮</span><h3>Fracciones Parciales</h3>
+          <p>Factores lineales distintos y repetidos para integrales racionales.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/6rVvGxQpB3M" title="Fracciones parciales" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">📏</span><h3>Área y Volumen</h3>
+          <p>Área entre curvas y sólidos de revolución (discos/arandelas).</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/3oGhxNQfB7M" title="Área y volumen" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">📐</span><h3>Longitud de Curva</h3>
+          <p>Fórmula L = ∫√(1+(dy/dx)²) dx para longitud de arco.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/5KQxQJhX1kA" title="Longitud de arco" allowfullscreen></iframe></div>
+        </div>
+        <div class="knowledge-card">
+          <span class="card-icon">🚀</span><h3>Cinemática</h3>
+          <p>Integración de aceleración para obtener velocidad y posición.</p>
+          <div class="video-frame"><iframe src="https://www.youtube.com/embed/8G9j9JqGqWU" title="Cinemática integral" allowfullscreen></iframe></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>✨ Diseñado con precisión ·</span> <strong>Genesis Pinto</strong> <span>· Facultad de Ingeniería Industrial © 2025</span>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      // Navegación SPA
+      const navItems = document.querySelectorAll('.nav-item');
+      const sections = document.querySelectorAll('.section-content');
+
+      navItems.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const targetId = this.dataset.target;
+          navItems.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          sections.forEach(sec => sec.classList.remove('visible'));
+          document.getElementById(targetId).classList.add('visible');
+        });
+      });
+
+      // Alternar entre paleta verde/azul y verde oscuro/azul oscuro
+      const themeToggle = document.getElementById('themeToggle');
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-industrial');
+        if (document.body.classList.contains('dark-industrial')) {
+          themeToggle.innerHTML = '🌑 Oscuro profundo';
+        } else {
+          themeToggle.innerHTML = '🌿 Verde/Azul';
+        }
+      });
+
+      // Movimiento sutil de partículas
+      const particleBg = document.querySelector('.particle-bg');
+      if (particleBg) {
+        let posX = 0, posY = 0;
+        setInterval(() => {
+          posX = Math.sin(Date.now()/5000) * 8;
+          posY = Math.cos(Date.now()/7000) * 6;
+          particleBg.style.transform = `translate(${posX}px, ${posY}px)`;
+        }, 50);
+      }
+    })();
+  </script>
+</body>
+</html>
