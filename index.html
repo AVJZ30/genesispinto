@@ -250,9 +250,17 @@
       margin-bottom: 2rem;
       color: #c0f0e0;
     }
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 1.8rem;
+      background: linear-gradient(135deg, #8fffd8, #6bc8ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .card-mosaic {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
       margin-top: 1.5rem;
     }
@@ -277,8 +285,9 @@
       border-color: rgba(0, 255, 200, 0.7);
     }
     .card-icon {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       margin-bottom: 1.2rem;
+      filter: drop-shadow(0 0 8px rgba(0,255,180,0.5));
     }
     .knowledge-card h3 {
       font-weight: 600;
@@ -286,11 +295,41 @@
       margin-bottom: 0.9rem;
       color: #c0ffe8;
     }
-    .knowledge-card p {
+    .knowledge-card .concept-text {
       color: #b0d4c8;
       line-height: 1.7;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.2rem;
       flex: 1;
+      font-size: 0.95rem;
+    }
+    .knowledge-card .formula-highlight {
+      background: rgba(0, 255, 180, 0.1);
+      border-left: 3px solid #00ffb3;
+      padding: 0.8rem 1rem;
+      border-radius: 0.8rem;
+      margin-bottom: 1.2rem;
+      font-family: 'Fira Code', monospace;
+      color: #9ff0d0;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+    .knowledge-card .steps-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1.5rem;
+    }
+    .knowledge-card .steps-list li {
+      padding: 0.4rem 0;
+      color: #b0d4c8;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .knowledge-card .steps-list li::before {
+      content: "▸";
+      color: #00ffb3;
+      font-weight: bold;
     }
     .video-frame {
       border-radius: 1.5rem;
@@ -300,6 +339,7 @@
       height: 0;
       background: #02110e;
       box-shadow: 0 10px 20px rgba(0,0,0,0.7);
+      margin-top: auto;
     }
     .video-frame iframe {
       position: absolute;
@@ -308,6 +348,39 @@
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    /* Sección de bienvenida mejorada */
+    .welcome-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .welcome-card {
+      background: rgba(0, 55, 45, 0.4);
+      backdrop-filter: blur(15px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid rgba(0, 230, 190, 0.25);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .welcome-card:hover {
+      transform: translateY(-5px);
+    }
+    .welcome-card .icon-large {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .welcome-card h3 {
+      color: #c0ffe8;
+      margin-bottom: 0.8rem;
+    }
+    .welcome-card p {
+      color: #b0d4c8;
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
     footer {
@@ -330,10 +403,18 @@
     @media (max-width: 700px) {
       .main-wrapper {
         padding: 2rem 1.5rem;
+        border-radius: 2.5rem;
       }
       .premium-header {
         flex-direction: column;
         align-items: flex-start;
+        padding: 1.5rem;
+      }
+      .logo-area h1 {
+        font-size: 2rem;
+      }
+      .card-mosaic {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -344,7 +425,6 @@
     <!-- Header con logo de la Facultad de Ingeniería Industrial -->
     <header class="premium-header">
       <div class="faculty-logo">
-        <!-- Logo representativo de Ingeniería Industrial (ícono moderno) -->
         <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none'%3E%3Ccircle cx='50' cy='50' r='45' stroke='%2300ffb3' stroke-width='6'/%3E%3Cpath d='M30 55 L50 20 L70 55 M40 45 L50 35 L60 45' stroke='%2300e6b8' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='65' r='8' fill='%2300ffaa'/%3E%3C/svg%3E" alt="Logo Ingeniería Industrial">
         <span>Facultad de Ingeniería Industrial</span>
       </div>
@@ -368,37 +448,106 @@
     <!-- Sección Inicio -->
     <div id="inicio" class="section-content visible">
       <div class="hero-message">
-        <h2 style="font-size:2.2rem; margin-bottom:0.5rem;">Domina el cálculo integral</h2>
-        <p>Desde el área bajo la curva hasta aplicaciones industriales. Diseñado por Genesis Pinto.</p>
+        <h2 style="font-size:2.2rem; margin-bottom:0.8rem; background: linear-gradient(135deg, #8fffd8, #6bc8ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Domina el Cálculo Integral</h2>
+        <p style="font-size:1.1rem; max-width:800px;">El cálculo integral es una rama fundamental de las matemáticas que estudia la acumulación de cantidades y el área bajo curvas. Es esencial para ingeniería, física, economía y ciencias aplicadas. Este portal te guiará desde los conceptos básicos hasta aplicaciones avanzadas.</p>
       </div>
-      <div class="card-mosaic">
-        <div class="knowledge-card"><span class="card-icon">📐</span><h3>Integrales</h3><p>Concepto fundamental del área acumulada y antiderivadas.</p></div>
-        <div class="knowledge-card"><span class="card-icon">⚡</span><h3>Sustitución</h3><p>Cambio de variable para simplificar funciones complejas.</p></div>
+      <div class="welcome-grid">
+        <div class="welcome-card">
+          <div class="icon-large">📐</div>
+          <h3>Integrales Indefinidas</h3>
+          <p>La antiderivada o primitiva de una función f(x) es otra función F(x) tal que F'(x) = f(x). Se representa como ∫f(x)dx = F(x) + C, donde C es la constante de integración.</p>
+        </div>
+        <div class="welcome-card">
+          <div class="icon-large">📏</div>
+          <h3>Integrales Definidas</h3>
+          <p>Calculan el área neta entre una función y el eje x en un intervalo [a,b]. El Teorema Fundamental del Cálculo relaciona la derivada con la integral: ∫ₐᵇ f(x)dx = F(b) - F(a).</p>
+        </div>
+        <div class="welcome-card">
+          <div class="icon-large">⚙️</div>
+          <h3>Aplicaciones en Ingeniería</h3>
+          <p>Las integrales se usan para calcular áreas, volúmenes, centros de masa, trabajo realizado por fuerzas variables, momentos de inercia y análisis de señales en ingeniería industrial.</p>
+        </div>
+        <div class="welcome-card">
+          <div class="icon-large">🎯</div>
+          <h3>Métodos de Integración</h3>
+          <p>Existen diversas técnicas: sustitución, integración por partes, fracciones parciales, sustitución trigonométrica, entre otras. Cada método se aplica según la estructura de la función a integrar.</p>
+        </div>
       </div>
     </div>
 
     <!-- 1º Parcial -->
     <div id="parcial1" class="section-content">
-      <h2 style="font-size:2rem; margin-bottom:1.8rem;">📘 1º Parcial: Técnicas de Integración</h2>
+      <h2 class="section-title">📘 1º Parcial: Técnicas de Integración</h2>
       <div class="card-mosaic">
+        <!-- Integrales Inmediatas -->
         <div class="knowledge-card">
-          <span class="card-icon">📈</span><h3>Integrales Inmediatas</h3>
-          <p>Área bajo la curva y reglas básicas. ∫xⁿ dx = xⁿ⁺¹/(n+1) + C.</p>
+          <span class="card-icon">📈</span>
+          <h3>Integrales Inmediatas</h3>
+          <p class="concept-text">Son las integrales que se resuelven directamente aplicando las reglas básicas de integración. Provienen de invertir las fórmulas de derivación. El concepto fundamental es encontrar una función cuya derivada sea el integrando dado. Se utilizan para funciones polinómicas, exponenciales, logarítmicas y trigonométricas básicas.</p>
+          <div class="formula-highlight">
+            ∫xⁿ dx = xⁿ⁺¹/(n+1) + C &nbsp;|&nbsp; ∫eˣ dx = eˣ + C<br>
+            ∫(1/x) dx = ln|x| + C &nbsp;|&nbsp; ∫cos(x)dx = sen(x) + C
+          </div>
+          <ul class="steps-list">
+            <li>Identificar la forma básica de la función</li>
+            <li>Aplicar la regla de integración correspondiente</li>
+            <li>Sumar la constante de integración C</li>
+            <li>Verificar derivando el resultado</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/Zaxr2cf5ACk" title="Integrales inmediatas" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Cambio de Variables -->
         <div class="knowledge-card">
-          <span class="card-icon">🔄</span><h3>Cambio de Variables</h3>
-          <p>Método de sustitución u = g(x). Deshace la regla de la cadena.</p>
+          <span class="card-icon">🔄</span>
+          <h3>Cambio de Variables</h3>
+          <p class="concept-text">También conocido como método de sustitución, es la técnica inversa a la regla de la cadena. Consiste en elegir una parte del integrando como una nueva variable u = g(x), calcular du = g'(x)dx y reescribir toda la integral en términos de u. Es especialmente útil cuando aparece una función y su derivada en el integrando.</p>
+          <div class="formula-highlight">
+            ∫f(g(x))·g'(x)dx = ∫f(u)du &nbsp; donde u = g(x)
+          </div>
+          <ul class="steps-list">
+            <li>Seleccionar u = g(x) (generalmente la función interna)</li>
+            <li>Calcular du = g'(x)dx</li>
+            <li>Sustituir en la integral original</li>
+            <li>Resolver la integral en términos de u</li>
+            <li>Reemplazar u por g(x) en el resultado</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/5Ej7FPMxmPA" title="Cambio de variable" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Por Partes -->
         <div class="knowledge-card">
-          <span class="card-icon">🧩</span><h3>Por Partes</h3>
-          <p>∫u dv = uv - ∫v du. Estrategia ALPES/ILATE.</p>
+          <span class="card-icon">🧩</span>
+          <h3>Integración por Partes</h3>
+          <p class="concept-text">Método basado en la regla del producto para derivadas. Se utiliza cuando el integrando es el producto de dos funciones de distinta naturaleza. La fórmula es ∫u dv = uv - ∫v du. La clave está en elegir adecuadamente u y dv usando la regla ALPES/ILATE (Algebraicas, Logarítmicas, Polinómicas, Exponenciales, Seno/Coseno).</p>
+          <div class="formula-highlight">
+            ∫u dv = uv - ∫v du &nbsp; (Regla ILATE para elegir u)
+          </div>
+          <ul class="steps-list">
+            <li>Identificar u y dv en el integrando</li>
+            <li>Derivar u para obtener du</li>
+            <li>Integrar dv para obtener v</li>
+            <li>Aplicar la fórmula ∫u dv = uv - ∫v du</li>
+            <li>Resolver la integral resultante</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/93kW5colCAU" title="Integración por partes" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Trigonométricas -->
         <div class="knowledge-card">
-          <span class="card-icon">📐</span><h3>Trigonométricas</h3>
-          <p>Potencias de seno, coseno, secante e identidades.</p>
+          <span class="card-icon">📐</span>
+          <h3>Integrales Trigonométricas</h3>
+          <p class="concept-text">Son integrales que involucran potencias de funciones trigonométricas: seno, coseno, tangente, secante, cosecante y cotangente. Se resuelven usando identidades trigonométricas para reducir potencias y transformar productos en sumas. Casos comunes: ∫senⁿx dx, ∫cosⁿx dx, ∫tanⁿx dx, y productos como ∫sen(mx)cos(nx)dx.</p>
+          <div class="formula-highlight">
+            sen²x = (1-cos2x)/2 &nbsp;|&nbsp; cos²x = (1+cos2x)/2<br>
+            ∫tan(x)dx = ln|sec(x)| + C
+          </div>
+          <ul class="steps-list">
+            <li>Usar identidades para reducir potencias</li>
+            <li>Separar un factor para sustitución si es necesario</li>
+            <li>Aplicar cambio de variable u = sen(x) o u = cos(x)</li>
+            <li>Para productos: usar identidades de producto a suma</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/Zaxr2cf5ACk" title="Integrales trigonométricas" allowfullscreen></iframe></div>
         </div>
       </div>
@@ -406,26 +555,77 @@
 
     <!-- 2º Parcial -->
     <div id="parcial2" class="section-content">
-      <h2 style="font-size:2rem; margin-bottom:1.8rem;">📙 2º Parcial: Aplicaciones Avanzadas</h2>
+      <h2 class="section-title">📙 2º Parcial: Aplicaciones Avanzadas</h2>
       <div class="card-mosaic">
+        <!-- Fracciones Parciales -->
         <div class="knowledge-card">
-          <span class="card-icon">🧮</span><h3>Fracciones Parciales</h3>
-          <p>Factores lineales distintos y repetidos para integrales racionales.</p>
+          <span class="card-icon">🧮</span>
+          <h3>Fracciones Parciales</h3>
+          <p class="concept-text">Técnica algebraica para descomponer funciones racionales P(x)/Q(x) en suma de fracciones más simples que pueden integrarse fácilmente. Se aplica cuando el grado del numerador es menor que el del denominador. Los casos principales son: factores lineales distintos, factores lineales repetidos, factores cuadráticos irreducibles.</p>
+          <div class="formula-highlight">
+            Caso 1: 1/((x-a)(x-b)) = A/(x-a) + B/(x-b)<br>
+            Caso 2: 1/(x-a)² = A/(x-a) + B/(x-a)²
+          </div>
+          <ul class="steps-list">
+            <li>Factorizar completamente el denominador Q(x)</li>
+            <li>Plantear la descomposición según los factores</li>
+            <li>Multiplicar por Q(x) para eliminar denominadores</li>
+            <li>Resolver el sistema para hallar A, B, C...</li>
+            <li>Integrar cada fracción simple resultante</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/6pFmUh41jsQ" title="Fracciones parciales" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Área y Volumen -->
         <div class="knowledge-card">
-          <span class="card-icon">📏</span><h3>Área y Volumen</h3>
-          <p>Área entre curvas y sólidos de revolución (discos/arandelas).</p>
+          <span class="card-icon">📏</span>
+          <h3>Área y Volumen</h3>
+          <p class="concept-text">Aplicación directa de la integral definida para calcular áreas entre curvas y volúmenes de sólidos de revolución. El área entre dos curvas f(x) y g(x) en [a,b] es ∫ₐᵇ |f(x)-g(x)|dx. Los volúmenes se calculan mediante el método de discos (V = π∫[f(x)]²dx) o arandelas cuando hay un hueco (V = π∫([f(x)]²-[g(x)]²)dx).</p>
+          <div class="formula-highlight">
+            Área = ∫ₐᵇ [f(x)-g(x)]dx &nbsp;|&nbsp; Volumen = π∫ₐᵇ [f(x)]²dx
+          </div>
+          <ul class="steps-list">
+            <li>Graficar las funciones para visualizar la región</li>
+            <li>Encontrar los puntos de intersección (límites)</li>
+            <li>Plantear la integral de área o volumen</li>
+            <li>Para volúmenes: identificar eje de rotación</li>
+            <li>Resolver la integral definida</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/5ZrfmQEVMjk" title="Área y volumen" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Longitud de Curva -->
         <div class="knowledge-card">
-          <span class="card-icon">📐</span><h3>Longitud de Curva</h3>
-          <p>Fórmula L = ∫√(1+(dy/dx)²) dx para longitud de arco.</p>
+          <span class="card-icon">📐</span>
+          <h3>Longitud de Curva</h3>
+          <p class="concept-text">La longitud de arco mide la distancia a lo largo de una curva suave entre dos puntos. Se calcula mediante la integral L = ∫ₐᵇ √(1+[f'(x)]²)dx para curvas en forma explícita y = f(x). Si la curva está en forma paramétrica: L = ∫ₐᵇ √((dx/dt)²+(dy/dt)²)dt. Es una aplicación importante en diseño industrial y optimización de trayectorias.</p>
+          <div class="formula-highlight">
+            L = ∫ₐᵇ √(1 + [f'(x)]²) dx &nbsp; (forma explícita)
+          </div>
+          <ul class="steps-list">
+            <li>Derivar la función f'(x)</li>
+            <li>Calcular [f'(x)]² y sumar 1</li>
+            <li>Integrar la raíz cuadrada en el intervalo</li>
+            <li>Para curvas complejas usar métodos numéricos</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/NFAvqq_jo8o" title="Longitud de arco" allowfullscreen></iframe></div>
         </div>
+
+        <!-- Cinemática -->
         <div class="knowledge-card">
-          <span class="card-icon">🚀</span><h3>Cinemática</h3>
-          <p>Integración de aceleración para obtener velocidad y posición.</p>
+          <span class="card-icon">🚀</span>
+          <h3>Cinemática Integral</h3>
+          <p class="concept-text">Aplicación del cálculo integral al movimiento de partículas. Conociendo la aceleración a(t), se integra para obtener la velocidad v(t) = ∫a(t)dt + v₀, y al integrar nuevamente se obtiene la posición x(t) = ∫v(t)dt + x₀. Fundamental en ingeniería para análisis de mecanismos, robótica y control de movimiento.</p>
+          <div class="formula-highlight">
+            v(t) = ∫a(t)dt + v₀ &nbsp;|&nbsp; x(t) = ∫v(t)dt + x₀<br>
+            Δx = ∫ₜ₁ᵗ² v(t)dt (desplazamiento neto)
+          </div>
+          <ul class="steps-list">
+            <li>Identificar la función de aceleración a(t)</li>
+            <li>Integrar para obtener v(t) con condición inicial</li>
+            <li>Integrar v(t) para obtener posición x(t)</li>
+            <li>Calcular desplazamiento y distancia recorrida</li>
+          </ul>
           <div class="video-frame"><iframe src="https://www.youtube.com/embed/PP1orhr_MCA" title="Cinemática integral" allowfullscreen></iframe></div>
         </div>
       </div>
